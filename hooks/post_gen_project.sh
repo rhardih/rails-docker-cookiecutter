@@ -9,10 +9,10 @@
 set -euxo pipefail
 
 # Generate a new Rails project
-docker-compose run --no-deps web rails new . --force --database=postgresql
+docker compose run --no-deps web rails new . --force --database=postgresql
 
 # Change owner of all files to current user
 chown -R "$USER" .
 
 # Build the image
-docker-compose build
+docker compose build
