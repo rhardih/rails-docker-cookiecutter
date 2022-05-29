@@ -16,3 +16,19 @@ chown -R "$USER" .
 
 # Build the image
 docker compose build
+
+# Fix config/database.yml with template
+docker compose run web bin/rails app:template LOCATION=fix-database-config.rb
+
+# No need for it to stay after generation
+rm fix-database-config.rb
+
+# Spin up PostgreSQL 
+docker compose up -d db
+
+# Wait for 10 seconds and then create the database
+sleep 10
+docker compose run web rake db:create
+
+# Spin down PostgreSQL again
+docker compose down
