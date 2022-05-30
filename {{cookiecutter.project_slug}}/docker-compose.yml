@@ -15,3 +15,26 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    networks:
+      - default
+      - traefik-public
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.rule=Host(`{{cookiecutter.domain}}`)
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.entrypoints=http
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.middlewares={{cookiecutter.docker_swarm_stack_name}}-https-redirect
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.rule=Host(`{{cookiecutter.domain}}`)
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.entrypoints=https
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.tls=true
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.tls.certresolver=le
+        - traefik.http.services.{{cookiecutter.docker_swarm_stack_name}}-web.loadbalancer.server.port=3000
