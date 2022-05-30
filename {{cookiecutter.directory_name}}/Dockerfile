@@ -4,10 +4,10 @@ FROM ruby:{{cookiecutter.ruby_version}}
 
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
-WORKDIR /{{cookiecutter.directory_name}}
+WORKDIR /{{cookiecutter.project_slug}}
 
-COPY Gemfile /{{cookiecutter.directory_name}}/Gemfile
-COPY Gemfile.lock /{{cookiecutter.directory_name}}/Gemfile.lock
+COPY Gemfile /{{cookiecutter.project_slug}}/Gemfile
+COPY Gemfile.lock /{{cookiecutter.project_slug}}/Gemfile.lock
 
 RUN gem update --system
 RUN bundle install
