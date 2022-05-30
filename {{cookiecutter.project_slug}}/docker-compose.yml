@@ -38,3 +38,7 @@ services:
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.tls=true
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.tls.certresolver=le
         - traefik.http.services.{{cookiecutter.docker_swarm_stack_name}}-web.loadbalancer.server.port=3000
+
+networks:
+  traefik-public:
+    external: true
