@@ -17,8 +17,6 @@ services:
   web:
     image: {{cookiecutter.docker_image_prefix}}/{{cookiecutter.project_slug}}:latest
     build: .
-    entrypoint: ./entrypoint.sh
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - "3000:3000"
     depends_on:
