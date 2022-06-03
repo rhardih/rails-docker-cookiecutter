@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  db:
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+  web:
+    volumes:
+      - .:/{{cookiecutter.project_slug}}
+    environment:
+      - RAILS_ENV=development
+
+networks:
+  # For local dev, don't expect an external Traefik network
+  traefik-public:
+    external: false
+
+secrets:
+  {{cookiecutter.postgres_password_secret_name}}:
+    file: ./secrets/{{cookiecutter.postgres_password_secret_name}}.txt
+    external: false
