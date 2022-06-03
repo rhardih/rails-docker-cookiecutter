@@ -23,5 +23,8 @@ done
 # Run migrations or create the db if it doesn't yet exist (migration fails)
 bin/rails db:migrate || bin/rails db:setup db:seed
 
+# Precompile assets
+bin/rails assets:precompile
+
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"
