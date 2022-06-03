@@ -11,8 +11,14 @@ postgres_password_file=/run/secrets/{{cookiecutter.postgres_password_secret_name
 
 export {{cookiecutter.project_name|upper|replace(' ', '_')}}_DATABASE_PASSWORD=$(cat "$postgres_password_file")
 
-# Allow the "or" to work in the fallback below
 set +e
+
+# Wait for db to be running and responding to connections
+until pg_isready -h db
+do
+  echo "db is not ready sleeping 5s"
+  sleep 5
+done
 
 # Run migrations or create the db if it doesn't yet exist (migration fails)
 bin/rails db:migrate || bin/rails db:setup db:seed

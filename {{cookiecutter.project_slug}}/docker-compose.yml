@@ -20,11 +20,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      db:
-        # This is sthe only way to properly have compose wait for db to be fully
-        # up, but it is supposedly a deprecated configuration option
-        # https://github.com/docker/compose/issues/7681
-        condition: service_healthy
+      - db
     networks:
       - default
       - traefik-public # Assume this will be deployed to a node running traefik
