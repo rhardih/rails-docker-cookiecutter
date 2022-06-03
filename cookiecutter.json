@@ -4,5 +4,7 @@
   "project_name": "My New Rails Project",
   "project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
   "domain": "{{cookiecutter.project_slug}}.com",
-  "docker_swarm_stack_name": "{{cookiecutter.domain|replace('.', '-')}}"
+  "docker_swarm_stack_name": "{{cookiecutter.domain|replace('.', '-')}}",
+  "docker_image_prefix": "",
+  "postgres_password_secret_name": "postgres_password"
 }

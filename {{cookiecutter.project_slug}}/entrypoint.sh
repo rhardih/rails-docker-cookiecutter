@@ -11,5 +11,9 @@ set -euxo pipefail
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /{{cookiecutter.project_slug}}/tmp/pids/server.pid
 
+postgres_password_file=/run/secrets/{{cookiecutter.postgres_password_secret_name}}
+
+export {{cookiecutter.project_name|upper|replace(' ', '_')}}_DATABASE_PASSWORD=$(cat "$postgres_password_file")
+
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"
