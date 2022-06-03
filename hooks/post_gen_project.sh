@@ -9,7 +9,9 @@
 set -euxo pipefail
 
 # Generate a new Rails project
-docker compose run --no-deps web rails new . --force --database=postgresql
+# Override entrypoint, as we don't need to clean up previous pids, and can't run
+# anything related to db: yet.
+docker compose run --entrypoint= --no-deps web rails new . --force --database=postgresql
 
 # Change owner of all files to current user
 chown -R "$USER" .
@@ -18,17 +20,7 @@ chown -R "$USER" .
 docker compose build
 
 # Fix config/database.yml with template
-docker compose run web bin/rails app:template LOCATION=fix-database-config.rb
+docker compose run --entrypoint= --no-deps web rails app:template LOCATION=fix-database-config.rb
 
 # No need for it to stay after generation
 rm fix-database-config.rb
-
-# Spin up PostgreSQL 
-docker compose up -d db
-
-# Wait for 10 seconds and then create the database
-sleep 10
-docker compose run web rake db:create
-
-# Spin down PostgreSQL again
-docker compose down
