@@ -43,7 +43,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.rule=Host(`{{cookiecutter.domain}}`)
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.entrypoints=http
-        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.middlewares={{cookiecutter.docker_swarm_stack_name}}-https-redirect
+        - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-http.middlewares=https-redirect
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.rule=Host(`{{cookiecutter.domain}}`)
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.entrypoints=https
         - traefik.http.routers.{{cookiecutter.docker_swarm_stack_name}}-web-https.tls=true
