@@ -6,6 +6,8 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
+    healthcheck:
+      disable: true
   web:
     volumes:
       - .:/{{cookiecutter.project_slug}}

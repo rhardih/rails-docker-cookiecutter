@@ -6,5 +6,6 @@
   "domain": "{{cookiecutter.project_slug}}.com",
   "docker_swarm_stack_name": "{{cookiecutter.domain|replace('.', '-')}}",
   "docker_image_prefix": "",
-  "postgres_password_secret_name": "postgres_password"
+  "postgres_password_secret_name": "postgres_password",
+  "postgres_production_user": "{{ cookiecutter.project_name|lower|replace(' ', '_') }}"
 }

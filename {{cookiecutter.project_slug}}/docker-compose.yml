@@ -7,10 +7,10 @@ services:
     secrets:
       - {{cookiecutter.postgres_password_secret_name}}
     environment:
-      - POSTGRES_USER={{ cookiecutter.project_name|lower|replace(' ', '_') }}
+      - POSTGRES_USER={{cookiecutter.postgres_production_user}}
       - POSTGRES_PASSWORD_FILE=/run/secrets/{{cookiecutter.postgres_password_secret_name}}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U {{cookiecutter.postgres_production_user}}"]
       interval: 5s
       retries: 5
       timeout: 5s
