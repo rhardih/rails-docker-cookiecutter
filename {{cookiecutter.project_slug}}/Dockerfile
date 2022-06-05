@@ -1,11 +1,20 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:{{cookiecutter.ruby_version}}
+FROM ruby:{{cookiecutter.ruby_version}}-alpine
 
 # Use latest RubyGems
 RUN gem update --system
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+# postgresql-client - To get pg_isready binary
+# libpq-dev - Requirement for compiling pg gem
+# tzdata - To avoid error: 'TZInfo::DataSourceNotFound: tzinfo-data is not
+#          present', when precompiling assets
+RUN apk add --update --no-cache \
+  build-base \
+  libpq-dev \
+  nodejs \
+  postgresql-client \
+  tzdata
 
 WORKDIR /{{cookiecutter.project_slug}}
 

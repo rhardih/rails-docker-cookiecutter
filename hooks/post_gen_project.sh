@@ -20,6 +20,9 @@ docker compose run --entrypoint= --no-deps web rails new . \
 # update the compose config
 sed -i '' -e '/server -p 3000/ s/$/ -b 0.0.0.0/' Procfile.dev
 
+# Since we're running on alpine, we need to update bin/dev as well
+sed -i '' -e 's/bash/sh/g' bin/dev
+
 # Change owner of all files to current user
 chown -R "$USER" .
 
