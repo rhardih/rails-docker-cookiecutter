@@ -24,3 +24,8 @@ docker compose run --entrypoint= --no-deps web rails app:template LOCATION=fix-d
 
 # No need for it to stay after generation
 rm fix-database-config.rb
+
+# Build and push the image, so the project can be instantly deploy after
+# creation
+docker compose build
+docker compose push
