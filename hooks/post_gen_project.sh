@@ -8,10 +8,13 @@
 #                the last command to exit with a non-zero status,
 set -euxo pipefail
 
-# Generate a new Rails project
+# Generate a new Rails project set up to use a PostgreSQL as a databaes and with
+# tailwindcss for styles.
+#
 # Override entrypoint, as we don't need to clean up previous pids, and can't run
 # anything related to db: yet.
-docker compose run --entrypoint= --no-deps web rails new . --force --database=postgresql
+docker compose run --entrypoint= --no-deps web rails new . \
+  --force --database=postgresql --css tailwind
 
 # Change owner of all files to current user
 chown -R "$USER" .
