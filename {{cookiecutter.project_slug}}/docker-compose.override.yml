@@ -13,6 +13,8 @@ services:
       - .:/{{cookiecutter.project_slug}}
     environment:
       - RAILS_ENV=development
+    ports:
+      - "3000:3000"
 
 networks:
   # For local dev, don't expect an external Traefik network

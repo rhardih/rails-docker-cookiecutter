@@ -17,8 +17,6 @@ services:
   web:
     image: {{cookiecutter.docker_image_prefix}}/{{cookiecutter.project_slug}}:latest
     build: .
-    ports:
-      - "3000:3000"
     depends_on:
       - db
     networks:
