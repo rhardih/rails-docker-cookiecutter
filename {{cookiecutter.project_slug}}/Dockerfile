@@ -2,18 +2,21 @@
 
 FROM ruby:{{cookiecutter.ruby_version}}
 
+# Use latest RubyGems
+RUN gem update --system
+
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
 WORKDIR /{{cookiecutter.project_slug}}
 
-COPY Gemfile /{{cookiecutter.project_slug}}/Gemfile
-COPY Gemfile.lock /{{cookiecutter.project_slug}}/Gemfile.lock
-
-# For subsequent builds after generation
+# Copy entire project
 COPY . /{{cookiecutter.project_slug}}/
 
-RUN gem update --system
 RUN bundle install
+
+# Precompile assets (but skip if we're generating a new project, and bin/rails
+# doesn't exist yet)
+RUN if [ -f "bin/rails" ]; then bin/rails assets:precompile; fi
 
 EXPOSE 3000
 

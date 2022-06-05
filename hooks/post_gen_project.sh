@@ -16,8 +16,8 @@ set -euxo pipefail
 docker compose run --entrypoint= --no-deps web rails new . \
   --force --database=postgresql --css tailwind
 
-# The default web: task on the generated Procfile doesn't bind to 0.0.0.0, to
-# escape running in a docker container, so we append it manually
+# After generating the initial project we can remove the seed.Dockerfile and
+# update the compose config
 sed -i'' -e '/server -p 3000/ s/$/ -b 0.0.0.0/' Procfile.dev
 
 # Change owner of all files to current user

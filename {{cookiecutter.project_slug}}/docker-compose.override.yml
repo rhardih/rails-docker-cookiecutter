@@ -15,10 +15,7 @@ services:
       - RAILS_ENV=development
     ports:
       - "3000:3000"
-    # We only need the a small bit of what the entrypoint script does for local
-    # development mode
-    entrypoint: ""
-    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
+    command: bin/dev
     tty: true # Needed to keep foreman tasks running
 
 networks:
