@@ -8,31 +8,38 @@
 #                the last command to exit with a non-zero status,
 set -euxo pipefail
 
-# Generate a new Rails project set up to use a PostgreSQL as a databaes and with
-# tailwindcss for styles.
+# Generate a new Rails project, which is set up to use PostgreSQL as a database
+# and tailwindcss for styles.
 #
-# Override entrypoint, as we don't need to clean up previous pids, and can't run
-# anything related to db: yet.
-docker compose run --entrypoint= --no-deps web rails new . \
-  --force --database=postgresql --css tailwind
+# The entrypoint is overridden because there's no need to wait for a db or to
+# clean up previous pids etc. in this case.
+#
+# N.B.: Running `rails new` with the --skip-bundle would allow us to avoid
+# having to bundle again when we build the image, but unfortunately it doesn't
+# *just* skip bundling. It skips other necessary steps, so it's needless, but
+# unavoidable, double work. 
+docker compose run --no-deps --entrypoint= web \
+  rails new . \
+  --database=postgresql \
+  --css={{cookiecutter.css_framework}}
 
-# After generating the initial project we can remove the seed.Dockerfile and
-# update the compose config
+# The default Procfile doesn't allow connections from anything but localhost, so
+# this fixes the command
 sed -i '' -e '/server -p 3000/ s/$/ -b 0.0.0.0/' Procfile.dev
 
-# Since we're running on alpine, we need to update bin/dev as well
+# Since this is running on an alpine based image, update bin/dev as to use sh
+# instead of bash.
 sed -i '' -e 's/bash/sh/g' bin/dev
 
 # Change owner of all files to current user
 chown -R "$USER" .
 
+# Build the container so all gems are present in the image as well
+docker compose build web
+
 # Fix config/database.yml with template
-docker compose run --entrypoint= --no-deps web rails app:template LOCATION=fix-database-config.rb
+docker compose run --no-deps --entrypoint= web \
+  rails app:template LOCATION=fix-database-config.rb
 
-# No need for it to stay after generation
+# Cleanup the file, since it's no longer needed
 rm fix-database-config.rb
-
-# Build and push the image, so the project can be instantly deploy after
-# creation
-docker compose build
-docker compose push

@@ -1,11 +1,11 @@
 {
   "ruby_version": "3.1.2",
-  "rails_version": "7",
   "project_name": "My New Rails Project",
-  "project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
+  "project_slug": "{{ cookiecutter.project_name | slugify }}",
   "domain": "{{cookiecutter.project_slug}}.com",
   "docker_swarm_stack_name": "{{cookiecutter.domain|replace('.', '-')}}",
   "docker_image_prefix": "",
   "postgres_password_secret_name": "postgres_password",
-  "postgres_production_user": "{{ cookiecutter.project_name|lower|replace(' ', '_') }}"
+  "postgres_production_user": "{{ cookiecutter.project_name|lower|replace(' ', '_') }}",
+  "css_framework": ["tailwind", "bootstrap", "bulma", "postcss", "sass"]
 }

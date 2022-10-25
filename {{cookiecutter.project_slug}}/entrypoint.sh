@@ -11,6 +11,7 @@ postgres_password_file=/run/secrets/{{cookiecutter.postgres_password_secret_name
 
 export {{cookiecutter.project_name|upper|replace(' ', '_')}}_DATABASE_PASSWORD=$(cat "$postgres_password_file")
 
+# Rely on both pg_isready and bin/rails below to exit non-zero
 set +e
 
 # Wait for db to be running and responding to connections
