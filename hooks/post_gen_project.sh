@@ -37,9 +37,9 @@ chown -R "$USER" .
 # Build the container so all gems are present in the image as well
 docker compose build web
 
-# Fix config/database.yml with template
+# Fix various files for production readiness with a template
 docker compose run --no-deps --entrypoint= web \
-  rails app:template LOCATION=fix-database-config.rb
+  rails app:template LOCATION=post-gen-fixes.rb
 
 # Cleanup the file, since it's no longer needed
-rm fix-database-config.rb
+rm post-gen-fixes.rb
